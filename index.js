@@ -41,7 +41,7 @@ app.post('/search_results', async function (req, res) {
 		var result = await dbo.collection("locations").find(query).toArray();
 		res.send(result);
 	});
-});
+});	
 //sends location, time start, time end, into a database
 app.post('/submit_result', async function (req, res) {
 	res.status(200);

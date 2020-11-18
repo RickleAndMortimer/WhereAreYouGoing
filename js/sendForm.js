@@ -20,21 +20,22 @@ function create_request(formData, callback) {
 }
 function load_graph(schedules) {
 	var json = JSON.parse(schedules);
-	var x = [];
-	var y = [];
+	var x = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM",
+	"1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"];
+	var y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	for (var i = 0; i < json.length; i++) {
-		x.push(json[i].time_start);
-		x.push(json[i].time_end);
-	}
-	for (var i = 0; i < json.length; i++) {
-		y.push(parseInt(json[i].no_of_people) + 1);
-		y.push(parseInt(json[i].no_of_people) + 1);
+		for (var k = new Date(json[i].time_start).getHours(); k <= new Date(json[i].time_end).getHours(); k++) {
+			y[k] += parseInt(json[i].no_of_people) + 1;
+		}
 	}
 	var trace = {
 		x: x,
 		y: y,
-		type: 'histogram',
+		type: 'bar'
+	};
+	var layout = {
+		title: "People in this location on " + json[0].date
 	};
 	var data = [trace];
-	Plotly.newPlot('graph_div', data);
+	Plotly.newPlot('graph_div', data, layout);
 }
